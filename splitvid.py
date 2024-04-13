@@ -26,7 +26,7 @@ print("Путь к видео необходимого расширения",vid
 # TEST_VIDEO_PATHS = video_paths[1:]
 # TRAIN_VIDEO_PATHS = video_paths[:1]
 TRAIN_VIDEO_PATHS = video_paths
-print(TEST_VIDEO_PATHS,"\n\n", TRAIN_VIDEO_PATHS)
+# print(TEST_VIDEO_PATHS,"\n\n", TRAIN_VIDEO_PATHS)
 
 #try:
 for video_path in TRAIN_VIDEO_PATHS:
