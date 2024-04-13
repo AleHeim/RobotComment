@@ -8,7 +8,7 @@ import os
 
 model = YOLO('runs/detect/train/weights/best.pt')
 
-VIDEO_DIR_PATH = './videos/'
+VIDEO_DIR_PATH = './videos'
 video_paths = sv.list_files_with_extensions(
     directory=VIDEO_DIR_PATH,
     extensions=["mov", "mp4", "mkv"])
@@ -16,7 +16,8 @@ print('videos: ', video_paths)
 
 for video_path in video_paths:
     print('\n video_path: ', video_path)
-    video_file_path = os.path.join(VIDEO_DIR_PATH, video_path)
+    video_file_path = os.path.join(".", video_path)
+    print('\n video_file_path: ', video_file_path)
     cap = cv2.VideoCapture(video_file_path)
     ret = True
 
