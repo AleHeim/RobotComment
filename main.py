@@ -26,7 +26,7 @@ for video_path in video_paths:
         print('2')
         results = model.track(frame, persist=True)
         print('3')
-        frame_ = results(0).plot()
+        frame_ = results[0].plot()
         print('4')
         cv2.imshow('frame', frame_)
         print('5')
