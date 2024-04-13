@@ -1,0 +1,10 @@
+path: C:\Users\Vonad\Desktop\myCV\RobotComment\datasets\RoboBattles
+train: images\train # Путь к тренировочным изображениям
+val: images\train # Путь к проверочным изображениям (нужно будет поменять на поздних этапах разработки)
+
+
+names: 
+  0: Black
+  1: Grey
+  2: Robot
+  

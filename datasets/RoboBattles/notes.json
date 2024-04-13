@@ -1,0 +1,21 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "Black"
+    },
+    {
+      "id": 1,
+      "name": "Grey"
+    },
+    {
+      "id": 2,
+      "name": "Robot"
+    }
+  ],
+  "info": {
+    "year": 2024,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}
