@@ -12,8 +12,8 @@
   4) В командную строку введите команду "python -m venv venv" и дождитесь выполнения команды
   5) В командную строку введите команду "venv\Scripts\activate" и убедитесь что перед (слева) директорией появилось (venv) для этого просто нажмите Enter несколько раз
   6) Последний шаг, выберите ОДИН из вариантов ниже (6.1 или 6.2)
-     6.1) Если вы хотите использовать видеокарту с поддержкой CUDA, то в командную строку введите команду
-     "pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
-     После этого введите команду
-     "pip install -r requirementsCUDA.txt"
-     6.2) Если вы хотите использовать CPU вместо видеокарты, то в командную строку введите команду "pip install -r requirements.txt"
+  6.1) Если вы хотите использовать видеокарту с поддержкой CUDA, то в командную строку введите команду
+       "pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+       После этого введите команду
+       "pip install -r requirementsCUDA.txt"
+  6.2) Если вы хотите использовать CPU вместо видеокарты, то в командную строку введите команду "pip install -r requirements.txt"
