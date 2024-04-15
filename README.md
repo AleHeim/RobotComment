@@ -1,8 +1,7 @@
 # RobotComment
 
 Требования:
-  Требуется Python 3.12.3
-  Пакеты из requirements.txt или requirementsCUDA.txt 
+  Требуется Python 3.12.3 и пакеты из requirements.txt или requirementsCUDA.txt 
   
 Установка:
   1) Установите Python 3.12.3, в установщике рекомендуется выдать права администратора и добавить python.exe в PATH
