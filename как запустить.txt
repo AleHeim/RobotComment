@@ -1,0 +1,4 @@
+ввести команды в cmd(командную строку)
+cd C:\github\RobotComment
+venv\scripts\activate
+python main.py
