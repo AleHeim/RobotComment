@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
         if input_option == '1':
             list_devices()
-            device_id = int(input('Choose your device: '))
+            device_id = input('Choose your device: ')
             track_from_device(main_model, device_id)
 
         elif input_option == '2':
