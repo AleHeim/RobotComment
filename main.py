@@ -19,17 +19,17 @@ def split_video():
     create_directories()
     VIDEO_DIR_PATH = os.path.join(HOME, 'videos')
     IMAGE_DIR_PATH = os.path.join(HOME, 'images')
-    FRAME_STRIDE = 1100  # Adjust as needed
+    FRAME_STRIDE = 50  # Adjust as needed
 
     video_paths = sv.list_files_with_extensions(VIDEO_DIR_PATH, VIDEO_EXTENSIONS)
     for video_path in video_paths:
         video_name = os.path.splitext(os.path.basename(video_path))[0]
-        image_name_pattern = video_name + "-{:05d}.png"
+        image_name_pattern = video_name + "-{:05d}.jpg"
         with sv.ImageSink(IMAGE_DIR_PATH, image_name_pattern=image_name_pattern) as sink:
             for image in sv.get_video_frames_generator(str(video_path), stride=FRAME_STRIDE):
                 sink.save_image(image=image)
 
-def track_video(model, source):
+def track_video_dir(model, source):
     """Track objects in a video."""
 
     """Find all videos in directory"""
@@ -40,8 +40,15 @@ def track_video(model, source):
 
     for video_path in video_paths:
         video_file_path = os.path.join(".", video_path)
-        cap = cv2.VideoCapture(video_file_path)
-        while cap.isOpened():
+        track_video(model, video_file_path)
+
+def track_video(model, device_id):
+    """Track objects from a video"""
+    cap = cv2.VideoCapture(device_id)
+    if not cap.isOpened():
+        print(f"Failed to open device {device_id}")
+        return
+    while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
@@ -52,14 +59,6 @@ def track_video(model, source):
                 break
     cap.release()
     cv2.destroyAllWindows()
-
-def track_from_device(model, device_id):
-    """ """ """Track objects from a video device."""
-    cap = cv2.VideoCapture(device_id)
-    if not cap.isOpened():
-        print(f"Failed to open device {device_id}")
-        return
-    track_video(model, device_id)
 
 def train_model():
     """Train the YOLO model."""
