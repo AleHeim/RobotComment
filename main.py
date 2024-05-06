@@ -2,11 +2,17 @@ from ultralytics import YOLO
 import supervision as sv
 import cv2
 import os
+import time as t
 
 # Constants
 VIDEO_EXTENSIONS = ["mov", "mp4", "mkv"]
-HOME = "./"  # Adjust this this this to the appropriate home directory
+HOME = "./"  # Adjust this to the appropriate home directory
 main_model = YOLO('./runs/detect/train3/weights/best.pt')
+
+
+# Config
+check_bad_detections = True
+
 
 def create_directories():
     """Create necessary directories if they don't exist."""
@@ -44,19 +50,48 @@ def track_video_dir(model, source):
 
 def track_video(model, device_id):
     """Track objects from a video"""
+    frame_number = 0
+    average_fps = 0.0
+
+    frame_count = 0 # sv.list_files_with_extensions(directory='./bad_detections',extensions=['.jpeg'])
+    if not os.path.exists(f'./bad_detections/{device_id}'):
+        os.makedirs(f'./bad_detections/{device_id}')
+
     cap = cv2.VideoCapture(device_id)
     if not cap.isOpened():
         print(f"Failed to open device {device_id}")
         return
     while cap.isOpened():
+            # robot_ids = { 1: [], 2: []}
             ret, frame = cap.read()
             if not ret:
                 break
-            results = model.track(frame, persist=True)
+            start = t.time()
+            results = model.predict(frame)#, persist=True, tracker = 'bytetrack.yaml')
             frame_ = results[0].plot()
             cv2.imshow('frame', frame_)
             if cv2.waitKey(30) & 0xFF == ord('q'):
                 break
+            track_ids = results[0].boxes
+            try:
+                track_ids = results[0].boxes.xywh.cpu()
+            except AttributeError:
+                track_ids = []
+            print(f'Len: {len(track_ids)}\n{track_ids}')
+            if (len(track_ids) != 2 and check_bad_detections):
+                cv2.imwrite(f'./bad_detections/{device_id}/frame_{frame_count:05d}.jpg', frame)
+                print(f'Bad detection saved in ./bad_detections/{device_id} as frame_{frame_count:05d}.jpg')
+                frame_count+=1
+                if(len(track_ids) == 1):
+                    print(f'winner: {track_ids[0]}')
+            
+            end = t.time()
+            frame_number = frame_number + 1
+            fps = 1.0/(end-start)
+            average_fps += fps
+            print("FPS: %.1f" % fps)
+            print("Average FPS: %.1f" % (average_fps / frame_number) )
+
     cap.release()
     cv2.destroyAllWindows()
 
@@ -86,11 +121,11 @@ if __name__ == '__main__':
         if input_option == '1':
             list_devices()
             device_id = input('Choose your device: ')
-            track_from_device(main_model, device_id)
+            track_video(main_model, device_id)
 
         elif input_option == '2':
             video_dir = input('Enter video directory path: ')
-            track_video(main_model, video_dir)
+            track_video_dir(main_model, video_dir)
 
     elif mode == '2':
         train_model()
