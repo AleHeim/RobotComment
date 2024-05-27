@@ -6,6 +6,7 @@ import time as t
 
 # Constants
 VIDEO_EXTENSIONS = ["mov", "mp4", "mkv"]
+IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
 HOME = "./"  # Adjust this to the appropriate home directory
 main_model = YOLO('./runs/detect/train3/weights/best.pt')
 
@@ -53,9 +54,9 @@ def track_video(model, device_id):
     frame_number = 0
     average_fps = 0.0
 
-    frame_count = 0 # sv.list_files_with_extensions(directory='./bad_detections',extensions=['.jpeg'])
-    if not os.path.exists(f'./bad_detections/{device_id}'):
-        os.makedirs(f'./bad_detections/{device_id}')
+    frame_count = 0 # sv.list_files_with_extensions(directory='./datasets/bad_detections',extensions=['.jpeg'])
+    if not os.path.exists(f'./datasets/bad_detections/{device_id}'):
+        os.makedirs(f'./datasets/bad_detections/{device_id}')
 
     cap = cv2.VideoCapture(device_id)
     if not cap.isOpened():
@@ -67,23 +68,27 @@ def track_video(model, device_id):
             if not ret:
                 break
             start = t.time()
-            results = model.predict(frame)#, persist=True, tracker = 'bytetrack.yaml')
-            frame_ = results[0].plot()
-            cv2.imshow('frame', frame_)
+            results = model.predict(frame, verbose=False)#, persist=True, tracker = 'bytetrack.yaml', verbose=False)
+            # frame_ = results[0].plot()
+            # cv2.imshow('frame', frame_)
             if cv2.waitKey(30) & 0xFF == ord('q'):
                 break
             track_ids = results[0].boxes
             try:
-                track_ids = results[0].boxes.xywh.cpu()
+                # track_ids = results[0].boxes.xywh.cpu()
+                track_ids = results[0].boxes.cls
             except AttributeError:
                 track_ids = []
-            print(f'Len: {len(track_ids)}\n{track_ids}')
+            # print(f'Len: {len(track_ids)}\n{track_ids}')
             if (len(track_ids) != 2 and check_bad_detections):
-                cv2.imwrite(f'./bad_detections/{device_id}/frame_{frame_count:05d}.jpg', frame)
-                print(f'Bad detection saved in ./bad_detections/{device_id} as frame_{frame_count:05d}.jpg')
+                cv2.imwrite(f'./datasets/bad_detections/{device_id}/frame_{frame_count:05d}.jpg', frame)
+                print(f'Bad detection saved in ./datasets/bad_detections/{device_id} as frame_{frame_count:05d}.jpg')
                 frame_count+=1
                 if(len(track_ids) == 1):
+                    # print(f'winner: {track_ids[0]}')
                     print(f'winner: {track_ids[0]}')
+                    break
+            
             
             end = t.time()
             frame_number = frame_number + 1
@@ -110,12 +115,24 @@ def list_devices():
             cap.release()
     print("Available video devices:", devices)
 
+def autolabel(model, image_dir, save_dir):
+    image_paths = sv.list_files_with_extensions(
+    directory=image_dir,
+    extensions=IMAGE_EXTENSIONS)
+    print('umages: ', image_paths)
+    for image in image_paths:
+        results = main_model.predict(image)
+        image_name = os.path.basename(image)
+
+        results[0].save_txt(f'{save_dir}/{image_name[:image_name.rindex('.')]}.txt')
+
+
 if __name__ == '__main__':
     print('1: Tracking\n2: Training\n3: Split video by frames\nChoose mode and write a number:')
     mode = input()
 
     if mode == '1':
-        print('1: Tracking from device\n2: Tracking from video directory\nChoose input option:')
+        print('1: Tracking from device\n2: Tracking from video directory\n3: Auto label\nChoose input option:')
         input_option = input()
 
         if input_option == '1':
@@ -126,6 +143,11 @@ if __name__ == '__main__':
         elif input_option == '2':
             video_dir = input('Enter video directory path: ')
             track_video_dir(main_model, video_dir)
+
+        elif input_option == '3':
+            image_dir = './datasets/one/images'
+            save_dir = 'datasets/one/labels'
+            autolabel(main_model, image_dir, save_dir)
 
     elif mode == '2':
         train_model()
