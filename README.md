@@ -17,3 +17,19 @@
        После этого введите команду
        "pip install -r requirementsCUDA.txt"
   8) Если вы хотите использовать CPU вместо видеокарты, то в командную строку введите команду "pip install -r requirements.txt"
+
+
+--help
+usage: main.py [-h] [-cbd [CHECK_BAD_DETECTIONS]] [-dir] [-i INPUT] {track,train,split,label}
+
+positional arguments:
+  {track,train,split,label}
+                        Track: Track object. Train: Train model. Split: Split video by frames. Label: auto-labeling tool.
+
+options:
+  -h, --help            show this help message and exit
+  -cbd [CHECK_BAD_DETECTIONS], --check_bad_detections [CHECK_BAD_DETECTIONS]
+                        usage: -cbd <expected amount of objects>
+  -dir, --directory
+  -i INPUT, --input INPUT
+                        input device, directory or http/https address
