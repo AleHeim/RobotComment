@@ -15,7 +15,7 @@ main_model = YOLO('./runs/detect/train3/weights/best.pt')
 
 '''arguments parser'''
 parser = argparse.ArgumentParser()
-parser.add_argument("mode", type=str, choices=['track','train','split','label'], help="Track: Track object.\nTrain: Train model.\nSplit: Split video by frames.\nLabel: auto-labeling tool.\n")
+parser.add_argument("mode", type=str, choices=['track', 'train', 'split', 'label'], help="Track: Track object.\nTrain: Train model.\nSplit: Split video by frames.\nLabel: auto-labeling tool.\n")
 parser.add_argument("-cbd", "--check_bad_detections", type=int, nargs="?", default=False, help="usage: -cbd <expected amount of objects>")
 parser.add_argument("-dir", "--directory", action="store_true")
 parser.add_argument("-i", "--input", type=str,default=f"{HOME}videos", help="input device, directory or http/https address")
