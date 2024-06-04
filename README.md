@@ -23,7 +23,7 @@
 usage: main.py [-h] [-cbd [CHECK_BAD_DETECTIONS]] [-dir] [-i INPUT] {track,train,split,label}
 
 positional arguments:
-  {track,train,split,label}
+  {track, train, split, label}
                         Track: Track object. Train: Train model. Split: Split video by frames. Label: auto-labeling tool.
 
 options:
