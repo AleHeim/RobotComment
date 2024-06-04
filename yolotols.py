@@ -14,6 +14,8 @@ project = ls.get_project(11)
 project.export_tasks(export_type='YOLO', download_all_tasks = True, download_resources = True, export_location='./datasets/LS EXPORT/dataset.zip')
 with zipfile.ZipFile('./datasets/LS EXPORT/dataset.zip', 'r') as zip_ref:
     zip_ref.extractall('./datasets/LS EXPORT/dataset')
+    zip_ref.close()
+
 # Получите проект и набор данных
 # project = client.get_project(project_id="<project_id>")
 # dataset = project.get_dataset(dataset_id="<dataset_id>")
