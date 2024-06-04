@@ -19,7 +19,7 @@
   8) Если вы хотите использовать CPU вместо видеокарты, то в командную строку введите команду "pip install -r requirements.txt"
 
 
---help
+# --help
 usage: main.py [-h] [-cbd [CHECK_BAD_DETECTIONS]] [-dir] [-i INPUT] {track,train,split,label}
 
 positional arguments:
